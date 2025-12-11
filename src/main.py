@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from src.predict import ModelPredictor
+from src.model import ModelPredictor
 from src.schema import Data
 
 

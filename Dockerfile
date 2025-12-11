@@ -11,7 +11,6 @@ COPY ./requirements.txt /app/requirements.txt
 # Disable pip cache to shrink the image size a little bit,
 # since it does not need to be re-installed
 RUN pip install -r requirements.txt --no-cache-dir
-
 # Copy models directory
 COPY ./models /app/models
 
