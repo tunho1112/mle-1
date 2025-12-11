@@ -7,40 +7,41 @@ terraform {
       version = "4.80.0" // Provider version
     }
   }
-  required_version = "1.5.6" // Terraform version
+  required_version = "1.12.2" // Terraform version
 }
 
-// The library with methods for creating and
-// managing the infrastructure in GCP, this will
-// apply to all the resources in the project
+
 provider "google" {
   project     = var.project_id
   region      = var.region
 }
 
-// Google Kubernetes Engine
 resource "google_container_cluster" "my-gke" {
-  name     = "${var.project_id}-new-gke"
-  location = var.region
- 
-  // Enabling Autopilot for this cluster
-  enable_autopilot = true
+  name     = "${var.project_id}-gke-k5"
+  location = var.zone  // Use zone instead of region to reduce overhead
+  // Standard mode (not Autopilot)
+  remove_default_node_pool = true
+  initial_node_count       = 1
   
-  # // Enable Istio (beta)
-  # // https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#nested_istio_config
-  # // not yet supported on Autopilot mode
-  # addons_config {
-  #   istio_config {
-  #     disabled = false
-  #     auth     = "AUTH_NONE"
-  #   }
-  # }
+  // Configure initial node pool to minimize SSD usage
+  node_config {
+    disk_type = "pd-standard"
+  }
 }
 
-resource "google_storage_bucket" "my-bucket" {
-  name          = var.bucket
-  location      = var.region
-  force_destroy = true
+// Node pool with 2 nodes
+resource "google_container_node_pool" "primary_nodes" {
+  name       = "${var.project_id}-node-pool"
+  location   = var.zone  // Use zone to match cluster
+  cluster    = google_container_cluster.my-gke.name
+  node_count = 2
 
-  uniform_bucket_level_access = true
+  node_config {
+    machine_type = "e2-small"
+    disk_size_gb = 20
+    disk_type    = "pd-standard"
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
 }
