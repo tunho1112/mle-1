@@ -29,7 +29,7 @@ resource "google_container_cluster" "primary" {
 
 // Custom node pool with smaller instances to fit quota
 resource "google_container_node_pool" "primary_nodes" {
-  name       = "${var.project_id}-node-pool"
+  name       = "${var.project_id}-node-pool-1"
   location   = var.zone
   cluster    = google_container_cluster.primary.name
   node_count = 1 // Start with 1 node (2 CPUs)

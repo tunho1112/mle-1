@@ -25,11 +25,24 @@ docker run -d -p 5000:5000 mlflow:0.1
 ```
 
 
-// Google Kubernetes Engine
-resource "google_container_cluster" "primary" {
-  name     = "${var.project_id}-gke"
-  location = var.region
+## Jenkins
+admin/mle2025@
 
-  // Enabling Autopilot for this cluster
-  enable_autopilot = true
-}
+## docker
+dckr_pat_-ciwlKj3ZZsKehzrQ6h04JiWqTs
+
+
+## service k8s 
+
+```shell
+kubectl create ns nginx-system
+kubens nginx-system
+cd deployments/nginx-ingress
+helm upgrade --install nginx-ingress .
+```
+```bash
+kubectl create ns model-serving
+kubens model-serving
+cd k8s/helm/diabetes
+helm upgrade --install serving .
+```

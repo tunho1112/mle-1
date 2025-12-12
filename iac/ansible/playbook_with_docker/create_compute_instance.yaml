@@ -8,7 +8,7 @@
         # Refer to https://cloud.google.com/compute/docs/images/os-details#ubuntu_lts
         # or use the command `gcloud compute images list --project=ubuntu-os-cloud`
         zone: us-west3-b
-        project: mle-course1
+        project: seventh-acronym-480008-b9
         # The service account is needed to create the resources
         auth_kind: serviceaccount
         service_account_file: ../secrets/seventh-acronym-480008-b9-36c9a9a42c4e.json
@@ -40,6 +40,6 @@
           - 0.0.0.0/0 # Allow traffic from any source (use a more specific source range for security)
         direction: INGRESS # Direction from outside to inside, EGRESS is the opposite direction
         description: Allow incoming traffic on port 30000
-        project: k5-mle
+        project: seventh-acronym-480008-b9
         auth_kind: serviceaccount
         service_account_file: ../secrets/seventh-acronym-480008-b9-36c9a9a42c4e.json
