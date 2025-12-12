@@ -14,3 +14,8 @@ variable "zone" {
   description = "Zone where the instance will be created"
   default     = "asia-southeast1-b"
 }
+
+variable "machine_type" {
+  description = "Machine type for the Jenkins instance"
+  default     = "e2-standard-2"
+}

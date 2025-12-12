@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  serving:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: serving
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

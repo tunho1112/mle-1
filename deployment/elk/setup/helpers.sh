@@ -74,13 +74,20 @@ function check_user_exists {
 	local -i result=1
 	local -i exists=0
 	local output
+	local http_code
 
 	output="$(curl "${args[@]}")"
-	if [[ "${output: -3}" -eq 200 || "${output: -3}" -eq 404 ]]; then
+	http_code="${output: -3}"
+	
+	if [[ "$http_code" -eq 200 || "$http_code" -eq 404 ]]; then
 		result=0
 	fi
-	if [[ "${output: -3}" -eq 200 ]]; then
+	if [[ "$http_code" -eq 200 ]]; then
 		exists=1
+	elif [[ "$http_code" -eq 400 ]]; then
+		# Security is disabled, return 0 (user doesn't exist) and don't fail
+		result=0
+		exists=0
 	fi
 
 	if ((result)); then
@@ -112,9 +119,16 @@ function set_user_password {
 
 	local -i result=1
 	local output
+	local http_code
 
 	output="$(curl "${args[@]}")"
-	if [[ "${output: -3}" -eq 200 ]]; then
+	http_code="${output: -3}"
+	
+	if [[ "$http_code" -eq 200 ]]; then
+		result=0
+	elif [[ "$http_code" -eq 400 ]]; then
+		# Security is disabled, skip password setting
+		sublog "Security disabled, skipping password setting"
 		result=0
 	fi
 
@@ -146,9 +160,16 @@ function create_user {
 
 	local -i result=1
 	local output
+	local http_code
 
 	output="$(curl "${args[@]}")"
-	if [[ "${output: -3}" -eq 200 ]]; then
+	http_code="${output: -3}"
+	
+	if [[ "$http_code" -eq 200 ]]; then
+		result=0
+	elif [[ "$http_code" -eq 400 ]]; then
+		# Security is disabled, skip user creation
+		sublog "Security disabled, skipping user creation"
 		result=0
 	fi
 
@@ -179,9 +200,16 @@ function ensure_role {
 
 	local -i result=1
 	local output
+	local http_code
 
 	output="$(curl "${args[@]}")"
-	if [[ "${output: -3}" -eq 200 ]]; then
+	http_code="${output: -3}"
+	
+	if [[ "$http_code" -eq 200 ]]; then
+		result=0
+	elif [[ "$http_code" -eq 400 ]]; then
+		# Security is likely disabled, skip role creation
+		sublog "Security disabled, skipping role creation"
 		result=0
 	fi
 

@@ -10,4 +10,6 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./run_env/data:/mlflow
+      - mlflow_data:/mlflow
+volumes:
+  mlflow_data:

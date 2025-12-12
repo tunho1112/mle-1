@@ -1,5 +1,7 @@
 # mle
 
+# deploy cluster k8s
+
 
 # buid docker 
 
@@ -21,3 +23,13 @@ docker run -d -p 5000:5000 mlflow:0.1
 ```bash
 03040bdac2ce48f3b43c7ac36e7a5526
 ```
+
+
+// Google Kubernetes Engine
+resource "google_container_cluster" "primary" {
+  name     = "${var.project_id}-gke"
+  location = var.region
+
+  // Enabling Autopilot for this cluster
+  enable_autopilot = true
+}
