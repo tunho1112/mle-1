@@ -40,8 +40,8 @@ wheels/
 # models/*.h5
 
 # Environment variables
-# .env.local
-# .env
+.env.local
+.env
 
 # Logs
 *.log
@@ -50,3 +50,4 @@ wheels/
 .DS_Store
 Thumbs.db
 .terraform/
+*.json
