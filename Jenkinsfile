@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment{
-        registry = 'tunm10/mle_1_serving:latest'
+        registry = 'tunm10/mle_1_serving'  # Image name without tag
         registryCredential = 'dockerhub'
     }
 
