@@ -8,7 +8,7 @@ groups:
       severity: warning
     annotations:
       summary: Node out of memory
-      description: Node memory has reached {{ humanize $value}}%
+      description: Node memory has reached {{ humanize $value }}%
 
 - name: Containers
   rules:
@@ -19,4 +19,26 @@ groups:
       severity: warning
     annotations:
       summary: OCR high cpu usage
-      description: OCR cpu consumption is at {{ humanize $value}}%
+      description: OCR cpu consumption is at {{ humanize $value }}%
+
+# - name: AI
+#   rules:
+#   - alert: HighRequestRate
+#     expr: sum(increase(ai_response_histogram_seconds_count[1m])) > 10
+#     for: 1m
+#     labels:
+#       severity: warning
+#     annotations:
+#       summary: High request rate
+#       description: The number of requests per minute exceeded 10 (actual: {{ $value }}% )
+
+- name: Test
+  rules:
+  - alert: Test
+    expr: sum(increase(ai_response_histogram_seconds_count[1m])) > 0
+    for: 10s
+    labels:
+      severity: warning
+    annotations:
+      summary: High request rate (Test)
+      description: Request count in last minute is {{ $value }}

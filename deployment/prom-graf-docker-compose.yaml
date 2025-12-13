@@ -48,13 +48,12 @@ services:
       - monitoring
 
   demo-metrics:
-    build: 
-      context: instrument
-      dockerfile: metrics/Dockerfile
+    image: mle_1_serving_local:0.2
     container_name: demo-metrics
     restart: unless-stopped
     ports:
-      - 8000:8000
+      - 8000:8080
+      - 8099:8099
     networks:
       - monitoring
 
