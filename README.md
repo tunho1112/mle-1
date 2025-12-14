@@ -8,6 +8,7 @@ This project aims to build a full MLOps pipeline for a machine learning predicti
   - [1. Develop Model](#1-develop-model)
   - [2. Web API](#2-web-api)
   - [3. Cloud](#3-cloud)
+  - [4. CI/CD](#4-cicd)
 
 - [📖 Details](#-details)
 
@@ -183,5 +184,39 @@ helm upgrade --install serving .
 ### Deploy Jenkins to VM Instance on GCP 
 Check the video guide at: `video_records/deploy_jenkins.mkv`    
 
+## 4. CICD
+### Jenkins Pipeline: Build, Push, and Deploy (GitLab → DockerHub → Kubernetes)
+
+Below is a guideline to configure a Jenkins pipeline that will:
+1. **Clone source code from GitLab**
+2. **Build and push the Docker image to DockerHub**
+3. **Deploy the application to your Kubernetes cluster**
+
+#### 1. Prerequisites
+
+- Jenkins server running, with Docker, kubectl, and Helm installed.
+- Jenkins **GitLab** plugin installed.
+- Jenkins credentials set up:
+  - **GitLab**: Username/Password or Personal Access Token (as a secret)
+  - **DockerHub**: Username/Password (as a DockerHub credential in Jenkins)
+  - **Kubeconfig** for cluster deployment (as a secret file credential)
+- Jenkins agent/runner has access to Docker daemon.
+- Proper context/namespace access for kubectl/helm on the Jenkins host.
+
+![Jenkins_dashboard](images/jenkins_dashboard.png)
+
+#### 2. Example Jenkins Pipeline (`Jenkinsfile`)
+
+This file defines the automation stages for building, testing, packaging, and deploying the ML model service using Jenkins. The typical pipeline in this `Jenkinsfile` includes:
+- **Test Stage:** Runs unit tests and validates dependencies by installing requirements and executing tests (usually using `pytest`).
+- **Build Stage:** Builds a Docker image of the service and tags it with the Jenkins build number, preparing it for deployment.
+- **Push Stage:** Authenticates with DockerHub (using stored Jenkins credentials) and pushes both the versioned and `latest` tags of the Docker image to the DockerHub registry.
+- **Deploy Stage:** Uses Kubernetes and Helm inside a containerized environment to deploy or upgrade the service on a target Kubernetes cluster based on the latest image.
+
+It also manages retention of build logs and incorporates timestamps for better build traceability. Credentials for DockerHub and any Kubernetes operations are managed securely via Jenkins credentials and secrets.  
+To use the pipeline, create a `Jenkinsfile` in your project’s root directory and commit it to your repository.
+![Jenkins Output](images/Jenkins_pipeline.png)
+
+For video guidance, see: `video_records/jenkins_cicd.mkv`
 
 
