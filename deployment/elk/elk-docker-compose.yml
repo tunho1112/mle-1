@@ -1,6 +1,4 @@
 # Source: https://github.com/deviantony/docker-elk/edit/main/docker-compose.yml
-version: '3.7'
-
 services:
 
   # The 'setup' service runs a one-off script which initializes the
