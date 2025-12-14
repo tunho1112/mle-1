@@ -36,23 +36,23 @@ pipeline {
                 }
             }
         }
-        // stage('Deploy') {
-        //     agent {
-        //         kubernetes {
-        //             containerTemplate {
-        //                 name 'helm' // Name of the container to be used for helm upgrade
-        //                 image 'fullstackdatascience/jenkins-k8s:lts' // The image containing helm
-        //                 imagePullPolicy 'Always' // Always pull image in case of using the same tag
-        //             }
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             container('helm') {
-        //                 sh("helm upgrade --install diabetes ./k8s/helm/diabetes --namespace model-serving")
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploy') {
+            agent {
+                kubernetes {
+                    containerTemplate {
+                        name 'helm' // Name of the container to be used for helm upgrade
+                        image 'fullstackdatascience/jenkins-k8s:lts' // The image containing helm
+                        imagePullPolicy 'Always' // Always pull image in case of using the same tag
+                    }
+                }
+            }
+            steps {
+                script {
+                    container('helm') {
+                        sh("helm upgrade --install diabetes ./k8s/helm/diabetes --namespace model-serving")
+                    }
+                }
+            }
+        }
     }
 }
